@@ -1,0 +1,21 @@
+# Fanpage Automator — Netlify
+# =============================
+# Deploy: baca README.md bagian A.
+
+[build]
+  # Functions (app + scheduled-post + lib pendukung)
+  functions = "netlify/functions"
+  # Publish dir wajib ada; isinya hanya placeholder — semua halaman
+  # dilayani oleh function app lewat redirect di bawah.
+  publish = "public"
+
+# Semua path lain dilayani function "app" (panel web). Status 200 =
+# rewrite (bukan redirect): URL asli di browser tetap dipertahankan,
+# jadi routing di app.mjs memakai new URL(request.url).pathname.
+# (Catatan: JANGAN tambah rule untuk path /.netlify/* — Netlify menolak
+# rule yang path-nya diawali /.netlify. Path internal function tetap
+# bisa dipanggil langsung; app.mjs membuang awalan itu bila perlu.)
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app"
+  status = 200
